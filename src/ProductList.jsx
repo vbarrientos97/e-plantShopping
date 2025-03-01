@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import CartSlice from './CartSlice';
+import {addItem} from './CartSlice';
 
 function ProductList() {
     const [showCart, setShowCart] = useState(false); 
@@ -249,6 +249,15 @@ const handlePlantsClick = (e) => {
     e.preventDefault();
     setShowCart(false);
   };
+
+  const handleAddToCart = (product) => {
+    dispatch(addItem(product));
+    setAddedToCart((prevState) => ({
+        ...prevState,
+        [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
+    }));
+};
+
     return (
         <div>
              <div className="navbar" style={styleObj}>
@@ -279,6 +288,7 @@ const handlePlantsClick = (e) => {
                         <div className="product-card" key={plantIndex}>
                             <img className="product-image" src={plant.image} alt={plant.name} />
                             <div className="product-title">{plant.name}</div>
+                            <div className="product-title">{plant.cost}</div>
                             {/*Similarly like the above plant.name show other details like description and cost*/}
                             <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
                         </div>

@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
+import ProductList from './ProductList';
+
 import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
+    const [showProductList, setShowProductList] = useState(false);
   const dispatch = useDispatch();
+
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
@@ -19,7 +23,9 @@ const CartItem = ({ onContinueShopping }) => {
 
   const handleContinueShopping = (e) => {
     if (onContinueShopping) {
-    onContinueShopping();
+    onContinueShopping(
+       setShowProductList(true)
+    );
     }
   };
 
@@ -48,7 +54,9 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   return (
-    <div className="cart-container">
+    <>
+    {!showProductList ? (
+        <div className="cart-container">
       <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
       <div>
         {cart.map(item => (
@@ -72,9 +80,15 @@ const CartItem = ({ onContinueShopping }) => {
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button onClick={handleCheckoutShopping} className="get-started-button1">Checkout</button>
       </div>
     </div>
+    ):(
+      <div className={`product-list-container ${showProductList ? 'visible' : ''}`}>
+      <ProductList />
+    </div>
+    )}
+    </>
   );
 };
 

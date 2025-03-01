@@ -107,6 +107,12 @@ body {
     margin-top: 10px;
 }
 
+.product-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #666;
+}
+
 .product-button:hover {
     background-color: #c0392b;
 }
